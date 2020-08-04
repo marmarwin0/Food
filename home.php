@@ -15,13 +15,13 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$sql = "SELECT Menu_Name FROM foodmenu";
+$sql = "SELECT Category_Name FROM managecategory";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
-        echo $row["Menu_Name"];
+        echo $row["Category_Name"];
     }
 } else {
     echo "0 results";
