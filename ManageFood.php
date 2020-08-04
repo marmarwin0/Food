@@ -53,13 +53,6 @@
           $uploadOk = 0;
         }
 
-      // Check file size
-      //if ($_FILES[$fileName]["size"] > 500000) {
-        //echo "Sorry, your file is too large.";
-        //$uploadOk = 0;
-      //}
-
-      // Allow certain file formats
       if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
         && $imageFileType != "gif" ) {
         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
@@ -72,7 +65,6 @@
         // if everything is ok, try to upload file
       } else {
       if (move_uploaded_file($_FILES[$fileName]["tmp_name"], $target_file)) {
-        //echo "The file ". basename( $_FILES["photo"]["name"]). " has been uploaded.";
         return $_FILES[$fileName]["name"];
       } else {
        echo "Sorry, there was an error uploading your file.";
@@ -101,7 +93,6 @@
       // set parameters and execute
 
       $stmt->execute();
-      //header("Location: item_list.php");
   } 
   $conn->close(); 
       include 'categorylist.php';
