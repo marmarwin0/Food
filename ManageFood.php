@@ -35,8 +35,10 @@
       function uploadFile($fileName){
         $target_dir="images/";
         $target_file=$target_dir.basename($_FILES[$fileName]["name"]);
+       
         $uploadOk=1;
         $imageFileType=strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
         $check = getimagesize($_FILES[$fileName]["tmp_name"]);
         if($check !== false) {
           echo "File is an image - " . $check["mime"] . ".";
@@ -52,10 +54,10 @@
         }
 
       // Check file size
-      if ($_FILES[$fileName]["size"] > 500000) {
-        echo "Sorry, your file is too large.";
-        $uploadOk = 0;
-      }
+      //if ($_FILES[$fileName]["size"] > 500000) {
+        //echo "Sorry, your file is too large.";
+        //$uploadOk = 0;
+      //}
 
       // Allow certain file formats
       if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
@@ -80,19 +82,19 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
       $fileName= uploadFile("photo");
-      $name=$_POST["foodname"];
+      $name=$_POST["name"];
       $price= $_POST["foodprice"];
       $description=$_POST["description"];
       $category=$_POST["category"];
       $mid=$_POST["mid"];
 
 
-      saveItem($name,$fileName,$price,$description,$category,$mid);
+      saveItem($name,$price,$description,$fileName,$category,$mid);
     }
     function saveItem($name,$price,$description,$photo,$category,$mid){
       global $conn;
       $sql = "insert into managefoods(Food_Name,Price,Description,Image,Category_Name,Mid)
-      values ('$name','$price','$description','$photo','$category','$mid')";
+      values (?,?,?,?,?,?)";
       $stmt = $conn->prepare($sql);
       $stmt->bind_param("sssssi", $name,$price,$description,$photo,$category,$mid);
 
@@ -100,11 +102,10 @@
 
       $stmt->execute();
       //header("Location: item_list.php");
-  }  
-          include 'categorylist.php';
-          $categorylist=getCategoryList();
-        
-    $conn->close();
+  } 
+  $conn->close(); 
+      include 'categorylist.php';
+      $categorylist=getCategoryList();    
   ?>
     <body class="bg">
         <nav class="navbar navbar-expand-sm bg-light">
@@ -123,13 +124,13 @@
               </li>
             </ul>
         </nav>
-        <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+        <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
         <div class="container">
             <h4 class="text-danger">Available Food Items</h4>
             <div class="col-5">
                 <div class="form-group">
                     <label for="name" class="text-danger">Item Name</label>
-                    <input type="text" class="form-control col-12" name="foodname" />
+                    <input type="text" class="form-control col-12" name="name" id="name" />
                 </div>
                 <div class="form-group">
                     <label for="name" class="text-danger">Price</label>
@@ -140,8 +141,8 @@
                     <input type="text" class="form-control col-12" name="description" />
                 </div>
                 <div class="form-group">
-                    <label for="name" class="text-danger">Images</label>
-                    <input type="file" class="form-control" name="photo"/>
+                    <label for="photo" class="text-danger">Images</label>
+                    <input type="file" class="form-control" id="photo"  name="photo" />
                 </div>
                 <div class="form-group">
                     <label for="name" class="text-danger">Select Category Name</label>
