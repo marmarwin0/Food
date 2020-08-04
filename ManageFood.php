@@ -22,7 +22,6 @@
           background-color: red;
           color: white;
           text-align: center;
-          padding:10px;
         }
     </style>
     <?php
@@ -84,20 +83,28 @@
       $name=$_POST["foodname"];
       $price= $_POST["foodprice"];
       $description=$_POST["description"];
+      $category=$_POST["category"];
+      $mid=$_POST["mid"];
 
-      saveItem($name,$photo,$price,$description);
+
+      saveItem($name,$fileName,$price,$description,$category,$mid);
     }
-    function saveItem($name,$photo,$price){
+    function saveItem($name,$price,$description,$photo,$category,$mid){
       global $conn;
-      $sql = "insert into managefood(Food_Name,Price,Description,Image,Category_Name) values(?,?,?,?,?)";
+      $sql = "insert into managefoods(Food_Name,Price,Description,Image,Category_Name,Mid)
+      values ('$name','$price','$description','$photo','$category','$mid')";
       $stmt = $conn->prepare($sql);
-      $stmt->bind_param("ssd", $name, $photo,$price);
+      $stmt->bind_param("sssssi", $name,$price,$description,$photo,$category,$mid);
 
       // set parameters and execute
 
       $stmt->execute();
       //header("Location: item_list.php");
-    }
+  }  
+          include 'categorylist.php';
+          $categorylist=getCategoryList();
+        
+    $conn->close();
   ?>
     <body class="bg">
         <nav class="navbar navbar-expand-sm bg-light">
@@ -116,7 +123,7 @@
               </li>
             </ul>
         </nav>
-        <form action="home.php" method="post">
+        <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
         <div class="container">
             <h4 class="text-danger">Available Food Items</h4>
             <div class="col-5">
@@ -133,24 +140,32 @@
                     <input type="text" class="form-control col-12" name="description" />
                 </div>
                 <div class="form-group">
-                    <label for="name" class="text-danger">Image</label>
-                    <input type="text" name="photo"/>
+                    <label for="name" class="text-danger">Images</label>
+                    <input type="file" class="form-control" name="photo"/>
                 </div>
                 <div class="form-group">
                     <label for="name" class="text-danger">Select Category Name</label>
-                    <select>
-
+                    <select name="category">
+                      <?php
+                        foreach($categorylist as $category){
+                          echo "<option value='{$category->CName}'>$category->CName</option>";
+                        }
+                      ?>
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-danger" id="addfood"> Add</button>
+                    <label for="name" class="text-danger">Mid</label>
+                    <input type="number" class="form-control" name="mid"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger"> Add</button>
                 </div>
                 <a href="home.html" class="text-danger font-italic font-weight-bold">Home</a>
             </div>
         </div> 
         </form>
         <div class="footer">
-          <h2>About Foods</h2>
+          <p>About Foods</p>
         </div>
     </body>
 </html>
