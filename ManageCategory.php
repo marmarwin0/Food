@@ -54,17 +54,17 @@
                     <button  type="submit" class="btn btn-danger"> Add</button>
                 </div>
               </div>
-            <a href="home.html" class="text-danger font-italic font-weight-bold" >Home</a>
+            <a href="home.php" class="text-danger font-italic font-weight-bold" >Home</a>
           </div>
         </form>
         <div class="footer">
-          <h2>About Category</h2>
+          <h2>About Categories</h2>
         </div>
         <?php
           if($_SERVER["REQUEST_METHOD"] == "POST"){
             $cname=$_POST["cname"];
-            $categoryarray=array("CName"=>$cname);
-            $res=json_encode($categoryarray);
+            $categoryList=array("CName"=>$cname);
+            $res=json_encode($categoryList);
 
             $myfile=fopen("category.txt","a");
             fwrite($myfile, $res."\n");
