@@ -1,3 +1,7 @@
 {"CName":"Sea Food"}
 {"CName":"Fried Chicken"}
 {"CName":"Noodle"}
+{"CName":"Sea Food"}
+{"CName":"Juice"}
+{"CName":"Juice"}
+{"CName":"Sea Food"}

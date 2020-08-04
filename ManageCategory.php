@@ -81,7 +81,7 @@
             die("Connection failed :".$conn->connect_error);
           }
           
-          $sql="insert into managecategory (Menu_Name) values('$cname')";
+          $sql="insert into managecategory(Category_Name)values('$cname')";
 
           if($conn->query($sql)===TRUE){
             echo "Manage Category Successfully";
